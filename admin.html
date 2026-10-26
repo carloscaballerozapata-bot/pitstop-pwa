@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b10">
+  <meta name="robots" content="noindex">
+  <title>PITSTOP — Admin</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="./index.html" class="logo">
+      <span class="logo-pit">PIT</span><span class="logo-stop">STOP</span><span class="logo-dot">.</span>
+    </a>
+    <nav class="header-nav">
+      <a href="./index.html">← Volver</a>
+      <button id="btn-refresh" class="btn btn-outline btn-sm" style="margin-left:.5rem">Actualizar</button>
+      <button id="btn-logout" class="btn btn-outline btn-sm hidden" style="margin-left:.5rem">Salir</button>
+    </nav>
+  </header>
+
+  <!-- LOGIN -->
+  <div id="login-view" class="section">
+    <div class="admin-login">
+      <h2>🔐 Acceso Admin</h2>
+      <p class="text-muted mb-2">Ingresa la clave de administrador configurada en Apps Script.</p>
+      <form id="login-form" class="form-card">
+        <div class="form-group">
+          <label for="clave-input">Clave de administrador</label>
+          <input type="password" id="clave-input" required placeholder="Tu clave secreta" minlength="12">
+        </div>
+        <button type="submit" class="btn btn-primary">INGRESAR</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard-view" class="section hidden">
+    <h2 class="section-title">🏁 Panel de <span>Control</span></h2>
+
+    <div id="dashboard-content">
+      <div class="loading-overlay"><span class="spinner"></span> Cargando panel...</div>
+    </div>
+
+    <!-- Bloquear horario -->
+    <div class="admin-section">
+      <h3>🚫 Bloquear Horario</h3>
+      <form id="block-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="block-fecha">Fecha</label>
+            <input type="date" id="block-fecha" required>
+          </div>
+          <div class="form-group">
+            <label for="block-inicio">Desde</label>
+            <input type="time" id="block-inicio" required>
+          </div>
+          <div class="form-group">
+            <label for="block-fin">Hasta</label>
+            <input type="time" id="block-fin" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="block-motivo">Motivo</label>
+          <input type="text" id="block-motivo" placeholder="Mantenimiento, evento privado, etc.">
+        </div>
+        <button type="submit" class="btn btn-primary">BLOQUEAR HORARIO</button>
+      </form>
+    </div>
+
+    <!-- Configuración -->
+    <div class="admin-section">
+      <h3>⚙️ Configuración</h3>
+      <form id="settings-form">
+        <div class="form-group">
+          <label for="set-name">Nombre del negocio</label>
+          <input type="text" id="set-name" placeholder="PITSTOP">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="set-open">Apertura</label>
+            <input type="time" id="set-open" value="10:00">
+          </div>
+          <div class="form-group">
+            <label for="set-close">Cierre</label>
+            <input type="time" id="set-close" value="19:00">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="set-slot">Duración turno (min)</label>
+          <input type="number" id="set-slot" min="10" max="180" value="60">
+        </div>
+        <button type="submit" class="btn btn-primary">GUARDAR CONFIGURACIÓN</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="admin-status" class="status-msg"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="logo-pit">PIT</span><span class="logo-stop">STOP</span><span class="logo-dot">.</span>
+    </div>
+    <p class="footer-tagline">Panel de Administración</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="./js/api.js"></script>
+  <script src="./js/admin.js"></script>
+
+</body>
+</html>
