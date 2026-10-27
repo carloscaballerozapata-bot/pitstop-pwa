@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#090b10">
+  <meta name="description" content="Menú del GO KART SPORT BAR: burgers, snacks, bebidas y postres.">
+  <title>Menú — GO KART SPORT BAR</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="./css/styles.css">
+  <style>
+    .productos { display: grid; gap: .75rem; padding: .4rem 1rem 0; max-width: 760px; margin: 0 auto; }
+    .producto {
+      display: grid; grid-template-columns: 78px 1fr; gap: .9rem; align-items: start;
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem;
+    }
+    .producto-img {
+      width: 78px; height: 78px; border-radius: 12px; display: grid; place-items: center; font-size: 2.3rem;
+      background: radial-gradient(circle at 30% 25%, rgba(255,53,69,.35), transparent 60%), var(--black);
+      border: 1px solid var(--line);
+    }
+    .producto h3 { font-family: var(--font-display); font-weight: 400; font-size: 1rem; letter-spacing: .02em; }
+    .producto p { color: var(--muted); font-size: .84rem; margin: .2rem 0 .6rem; line-height: 1.4; }
+    .producto-pie { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .producto-precio { font-family: var(--font-display); color: var(--yellow); font-size: 1.05rem; }
+    .producto .btn { min-height: 40px; padding: .45rem .8rem; font-size: .8rem; background: var(--red); color: #fff; }
+    .producto .btn.ok { background: var(--green); color: #052e14; }
+    .etiqueta { display: inline-block; font-size: .64rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #052e14; background: var(--yellow); border-radius: 4px; padding: .05rem .35rem; margin-left: .35rem; vertical-align: 2px; }
+    .pedido-barra {
+      position: fixed; left: .8rem; right: .8rem; bottom: calc(var(--nav-h) + var(--safe-b) + .6rem); z-index: 150;
+      display: flex; align-items: center; justify-content: space-between; gap: .8rem;
+      background: linear-gradient(135deg, var(--red), var(--red-dark)); border-radius: 14px; padding: .75rem 1rem;
+      box-shadow: 0 12px 30px var(--red-glow); transform: translateY(150%); transition: transform .3s cubic-bezier(.2,.9,.3,1.2);
+    }
+    .pedido-barra.on { transform: none; }
+    .pedido-barra b { font-family: var(--font-display); font-weight: 400; }
+    .pedido-barra small { display: block; opacity: .85; font-size: .72rem; }
+    .pedido-barra button { background: rgba(0,0,0,.25); border: 0; color: #fff; border-radius: 10px; padding: .5rem .8rem; font-weight: 800; cursor: pointer; }
+    .menu-nota { color: var(--muted); font-size: .78rem; text-align: center; padding: 1.2rem 1rem 0; }
+    .con-pedido { padding-bottom: calc(var(--nav-h) + var(--safe-b) + 90px); }
+  </style>
+</head>
+<body class="con-nav">
+
+  <header class="header">
+    <a href="./index.html" class="header-logo" aria-label="GO KART SPORT BAR — inicio"><img src="./img/logo.png" alt="GO KART SPORT BAR"></a>
+    <span class="estado-pill">🍔 Sport Bar</span>
+  </header>
+
+  <div class="page-head">
+    <h1>Menú <span style="color:var(--red)">digital</span></h1>
+    <p>Para después de la carrera (o antes).</p>
+  </div>
+
+  <div class="tabs" id="tabs" role="tablist" aria-label="Categorías"></div>
+  <main class="productos" id="productos" aria-live="polite"></main>
+  <p class="menu-nota">Precios en bolivianos (Bs). Los pedidos desde la app estarán disponibles pronto: por ahora pide en el bar.</p>
+
+  <div class="pedido-barra" id="pedido-barra" role="status">
+    <div><b id="pedido-resumen">0 productos · Bs 0</b><small>Muéstralo en la barra al pedir</small></div>
+    <button type="button" id="pedido-vaciar">Vaciar</button>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Navegación principal">
+    <a href="./index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>Inicio
+    </a>
+    <a href="./mapa.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4-6 2.5v13L9 17l6 2.5 6-2.5v-13L15 6.5Z"/><path d="M9 4v13M15 6.5v13"/></svg>Mapa
+    </a>
+    <a href="./menu.html" class="on" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 2v8a2 2 0 0 0 2 2v10M5 2v6M9 2v6M17 22V2c-2 1-3 3.5-3 7v4h3"/></svg>Menú
+    </a>
+    <a href="./cuenta.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Mi cuenta
+    </a>
+  </nav>
+
+  <script src="./js/menu.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+  </script>
+</body>
+</html>
