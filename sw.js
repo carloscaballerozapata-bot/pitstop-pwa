@@ -2,7 +2,7 @@
 // GO KART SPORT BAR — Service Worker
 // Al publicar cambios, subir CACHE_NAME (gokart-v3, v4…) para que los teléfonos los reciban.
 // ============================================================
-const CACHE_NAME = "gokart-v3";
+const CACHE_NAME = "gokart-v4";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
@@ -28,7 +28,8 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(STATIC_ASSETS)));
+  // cache: "reload" = siempre del servidor; sin esto se guardaba la copia vieja del navegador (GitHub la retiene 10 min)
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(STATIC_ASSETS.map(u => new Request(u, { cache: "reload" })))));
   self.skipWaiting();
 });
 
