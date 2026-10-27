@@ -12,7 +12,9 @@ const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, "0");
 const hoyStr = () => { const d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
 const ahoraMin = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
-const aMin = h => { const m = /^(\d{1,2}):(\d{2})/.exec(h || ""); return m ? +m[1] * 60 + +m[2] : -1; };
+// Acepta "10:00" y también "1899-12-30 10:00" (así llega cuando Sheets guardó la hora como fecha)
+const aMin = h => { const m = /(\d{1,2}):(\d{2})(?!.*\d{1,2}:\d{2})/.exec(h || ""); return m ? +m[1] * 60 + +m[2] : -1; };
+const hhmm = h => { const n = aMin(h); return n < 0 ? "" : pad(Math.floor(n / 60)) + ":" + pad(n % 60); };
 function fechaLarga(iso) {
   const [y, m, d] = iso.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString("es-BO", { weekday: "long", day: "numeric", month: "long" });
@@ -70,7 +72,7 @@ function pintarEstado(s) {
   const abierto = ahoraMin() >= abre && ahoraMin() < cierra;
   pill.classList.remove("hidden");
   pill.classList.toggle("cerrado", !abierto);
-  pill.querySelector("span").textContent = abierto ? "Abierto · hasta " + s.closingHour : "Abre " + s.openingHour;
+  pill.querySelector("span").textContent = abierto ? "Abierto · hasta " + hhmm(s.closingHour) : "Abre " + hhmm(s.openingHour);
 }
 
 // ---------- Experiencias ----------
