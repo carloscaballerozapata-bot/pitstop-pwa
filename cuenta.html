@@ -54,7 +54,7 @@
     <a href="./index.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>Inicio
     </a>
-    <a href="./mapa.html">
+    <a href="./mesas.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4-6 2.5v13L9 17l6 2.5 6-2.5v-13L15 6.5Z"/><path d="M9 4v13M15 6.5v13"/></svg>Mapa
     </a>
     <a href="./menu.html">
@@ -93,7 +93,7 @@
         top.appendChild(el("b", null, larga(r.fecha) + " · " + r.hora));
         top.appendChild(el("span", "badge badge-pendiente", r.fecha < hoy ? "Pasada" : "Pendiente"));
         card.appendChild(top);
-        card.appendChild(el("p", null, (r.servicio || "Carrera") + " · " + r.participantes + (r.participantes === 1 ? " piloto" : " pilotos") + " · Código " + String(r.codigo || "").slice(0, 8).toUpperCase()));
+        card.appendChild(el("p", null, (r.servicio || "Carrera") + " · " + r.participantes + (/^Mesa /.test(r.servicio || "") ? (r.participantes === 1 ? " persona" : " personas") : (r.participantes === 1 ? " piloto" : " pilotos")) + " · Código " + String(r.codigo || "").slice(0, 8).toUpperCase()));
         box.appendChild(card);
       });
     }

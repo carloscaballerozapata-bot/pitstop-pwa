@@ -14,14 +14,14 @@ const ZONAS = {
     titulo: "Sport Bar", color: "amarilla",
     texto: "Burgers, snacks y bebidas mientras miras las carreras y los partidos en pantalla.",
     datos: ["🍔 Comida rápida", "📺 Pantallas", "🍺 Bebidas"],
-    acciones: [{ txt: "Ver el menú", href: "./menu.html", principal: true },
-               { txt: "Reservar para un grupo ↗", href: "./index.html?zona=Sport%20Bar#reservar" }]
+    acciones: [{ txt: "Reservar una mesa ↗", href: "./mesas.html?zona=Sport%20Bar", principal: true },
+               { txt: "Ver el menú", href: "./menu.html" }]
   },
   terraza: {
     titulo: "Terraza", color: "amarilla",
     texto: "Mesas al aire libre con vista a toda la pista. El mejor lugar para cumpleaños y eventos.",
     datos: ["☀️ Al aire libre", "🎉 Eventos y cumpleaños", "👀 Vista a la pista"],
-    acciones: [{ txt: "Reservar para un evento ↗", href: "./index.html?zona=Terraza#reservar", principal: true },
+    acciones: [{ txt: "Reservar una mesa ↗", href: "./mesas.html?zona=Terraza", principal: true },
                { txt: "Ver el menú", href: "./menu.html" }]
   }
 };

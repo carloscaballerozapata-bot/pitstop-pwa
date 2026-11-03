@@ -26,8 +26,25 @@
     .producto p { color: var(--muted); font-size: .84rem; margin: .2rem 0 .6rem; line-height: 1.4; }
     .producto-pie { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
     .producto-precio { font-family: var(--font-display); color: var(--yellow); font-size: 1.05rem; }
-    .producto .btn { min-height: 40px; padding: .45rem .8rem; font-size: .8rem; background: var(--red); color: #fff; }
-    .producto .btn.ok { background: var(--green); color: #052e14; }
+    .producto { cursor: pointer; transition: border-color .2s; }
+    .producto:hover { border-color: var(--accent); }
+    .mas-rapido { width: 38px; height: 38px; border-radius: 10px; border: 0; background: var(--accent); color: var(--ink); font-size: 1.3rem; font-weight: 900; cursor: pointer; }
+    .mas-rapido.ok { background: var(--green); color: #052e14; font-size: .95rem; }
+    .prod-foto { margin: -1.4rem -1.2rem 1rem; height: 190px; display: grid; place-items: center; font-size: 6rem; border-radius: 24px 24px 0 0;
+      background: radial-gradient(circle at 50% 60%, rgba(255,212,0,.28), transparent 55%), radial-gradient(circle at 20% 20%, rgba(255,53,69,.25), transparent 50%), #0d1017; }
+    .prod-cabeza { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+    .prod-cabeza h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; }
+    .prod-cabeza b { font-family: var(--font-display); color: var(--accent); font-size: 1.25rem; white-space: nowrap; }
+    .prod-desc { color: var(--muted); font-size: .9rem; margin: .4rem 0 .6rem; }
+    .extra { display: flex; align-items: center; gap: .7rem; padding: .7rem .2rem; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .extra input { width: 20px; height: 20px; accent-color: var(--accent); }
+    .extra span { flex: 1; }
+    .extra b { color: var(--muted); font-weight: 600; font-size: .88rem; }
+    .prod-pie { display: flex; gap: .7rem; align-items: center; margin-top: 1.1rem; }
+    .prod-pie .contador { flex: 0 0 auto; }
+    .prod-pie .contador button { width: 44px; height: 44px; }
+    .prod-pie .contador b { min-width: 2ch; text-align: center; font-family: var(--font-display); font-size: 1.2rem; }
+    .prod-pie .btn-primary { min-height: 52px; font-size: .9rem; }
     .etiqueta { display: inline-block; font-size: .64rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #052e14; background: var(--yellow); border-radius: 4px; padding: .05rem .35rem; margin-left: .35rem; vertical-align: 2px; }
     .pedido-barra {
       position: fixed; left: .8rem; right: .8rem; bottom: calc(var(--nav-h) + var(--safe-b) + .6rem); z-index: 150;
@@ -47,17 +64,39 @@
 
   <header class="header">
     <a href="./index.html" class="header-logo" aria-label="GO KART SPORT BAR — inicio"><img src="./img/logo.png" alt="GO KART SPORT BAR"></a>
-    <span class="estado-pill">🍔 Sport Bar</span>
+    <a href="./mesas.html" class="estado-pill" style="text-decoration:none;color:var(--white)">Reservar mesa ↗</a>
   </header>
 
   <div class="page-head">
     <h1>Menú <span style="color:var(--red)">digital</span></h1>
-    <p>Para después de la carrera (o antes).</p>
+    <p>Toca un producto para ver los detalles y agregar extras.</p>
   </div>
 
   <div class="tabs" id="tabs" role="tablist" aria-label="Categorías"></div>
   <main class="productos" id="productos" aria-live="polite"></main>
-  <p class="menu-nota">Precios en bolivianos (Bs). Los pedidos desde la app estarán disponibles pronto: por ahora pide en el bar.</p>
+  <p class="menu-nota">Precios en bolivianos (Bs). Menú y precios de ejemplo. Los pedidos desde la app estarán disponibles pronto: por ahora muestra tu pedido en el bar.</p>
+
+  <!-- DETALLE DE PRODUCTO -->
+  <div id="hoja-producto" class="modal" role="dialog" aria-modal="true" aria-labelledby="prod-nombre">
+    <div class="modal-caja">
+      <button type="button" class="hoja-cerrar" data-cerrar aria-label="Cerrar">✕</button>
+      <div class="prod-foto" id="prod-emoji" aria-hidden="true"></div>
+      <div class="prod-cabeza"><h2 id="prod-nombre"></h2><b id="prod-precio"></b></div>
+      <p class="prod-desc" id="prod-desc"></p>
+      <div id="prod-extras-wrap">
+        <p class="subtitulo">Extras</p>
+        <div id="prod-extras"></div>
+      </div>
+      <div class="prod-pie">
+        <div class="contador">
+          <button type="button" id="prod-menos" aria-label="Menos">−</button>
+          <b id="prod-cant" aria-live="polite">1</b>
+          <button type="button" id="prod-mas" aria-label="Más">+</button>
+        </div>
+        <button type="button" class="btn btn-primary" id="prod-agregar">Agregar al pedido</button>
+      </div>
+    </div>
+  </div>
 
   <div class="pedido-barra" id="pedido-barra" role="status">
     <div><b id="pedido-resumen">0 productos · Bs 0</b><small>Muéstralo en la barra al pedir</small></div>
@@ -68,7 +107,7 @@
     <a href="./index.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>Inicio
     </a>
-    <a href="./mapa.html">
+    <a href="./mesas.html">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4-6 2.5v13L9 17l6 2.5 6-2.5v-13L15 6.5Z"/><path d="M9 4v13M15 6.5v13"/></svg>Mapa
     </a>
     <a href="./menu.html" class="on" aria-current="page">

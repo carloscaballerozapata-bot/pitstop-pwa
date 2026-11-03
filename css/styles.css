@@ -530,3 +530,56 @@ button { font-family: inherit; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .kart-mini { animation: none; offset-distance: 12%; }
 }
+
+/* ============================================================
+   REDISEÑO v5 — amarillo como color principal (según diseño Karting Fexco)
+   ============================================================ */
+:root { --accent: #ffd400; --accent-dark: #e0b800; --accent-glow: rgba(255, 212, 0, .30); --ink: #111318; }
+.btn-primary { background: var(--accent); color: var(--ink); box-shadow: 0 10px 26px var(--accent-glow); }
+.btn-primary:hover { background: var(--accent-dark); }
+.tab.on { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 0 6px 18px var(--accent-glow); }
+.chip-hora.on { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 0 6px 18px var(--accent-glow); }
+.chip-hora.on small { color: #3b3200; }
+.bottom-nav a.on svg { color: var(--accent); }
+.bottom-nav a.on::before { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+.splash-barra span { background: repeating-linear-gradient(-45deg, var(--accent) 0 10px, #ffe766 10px 20px); background-size: 28px 28px; box-shadow: 0 0 12px var(--accent-glow); }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(255,212,0,.15); }
+.hero h1 em { color: var(--accent); }
+
+/* Accesos del inicio: lista de tarjetas con icono, título y subtítulo */
+.accesos.lista { grid-template-columns: 1fr; gap: .65rem; }
+.accesos.lista .acceso { flex-direction: row; justify-content: flex-start; text-align: left; min-height: 78px; padding: .9rem 1.1rem; gap: 1rem; }
+.accesos.lista .acceso svg { flex: 0 0 auto; width: 36px; height: 36px; }
+.accesos.lista .acceso span { font-size: .98rem; }
+.accesos.lista .acceso small { display: block; font-family: 'Inter', sans-serif; font-size: .76rem; color: var(--muted); letter-spacing: 0; margin-top: .1rem; }
+.accesos.lista .acceso.principal { background: var(--accent); color: var(--ink); box-shadow: 0 12px 30px var(--accent-glow); }
+.accesos.lista .acceso.principal small { color: #4a4000; }
+.accesos.lista .acceso:hover { border-color: var(--accent); }
+.acceso .flecha { margin-left: auto; font-size: 1.2rem; opacity: .6; }
+@media (min-width: 600px) { .accesos.lista { grid-template-columns: repeat(3, 1fr); } }
+
+/* Hoja inferior (detalle de mesa, producto, confirmar) */
+.hoja-cerrar { position: absolute; top: .8rem; right: .8rem; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: rgba(9,11,16,.7); color: var(--white); font-size: 1.1rem; cursor: pointer; z-index: 2; }
+.modal-caja { position: relative; }
+.hoja-foto { margin: -1.4rem -1.2rem 1rem; height: 170px; background: #111 center / cover no-repeat; border-radius: 24px 24px 0 0; position: relative; }
+.hoja-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, var(--panel)); border-radius: inherit; }
+.hoja-titulo { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+.hoja-titulo h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; text-transform: uppercase; }
+.pastilla { font-size: .72rem; font-weight: 800; border-radius: 99px; padding: .25rem .7rem; }
+.pastilla.libre { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.35); }
+.pastilla.ocupada { background: rgba(148,155,170,.15); color: var(--muted); border: 1px solid var(--line); }
+.datos-mesa { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin: 1rem 0; }
+.datos-mesa div { background: var(--black); border: 1px solid var(--line); border-radius: 12px; padding: .6rem; text-align: center; }
+.datos-mesa small { display: block; color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; }
+.datos-mesa b { font-size: .92rem; }
+.subtitulo { font-weight: 800; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; margin: .9rem 0 .55rem; }
+.nota-provisional { font-size: .72rem; color: var(--muted); text-align: center; margin-top: .8rem; }
+
+/* Panel admin: ocupación de mesas y filtro */
+.ocupa-barra { display: flex; height: 14px; border-radius: 99px; overflow: hidden; background: var(--black); border: 1px solid var(--line); }
+.ocupa-barra span { display: block; height: 100%; }
+.ocupa-leyenda { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: .6rem; font-size: .8rem; color: var(--muted); }
+.ocupa-leyenda i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: .3rem; vertical-align: -1px; }
+.ocupa-leyenda b { color: var(--white); margin-left: .2rem; }
+.filtro-tipo { display: flex; gap: .5rem; overflow-x: auto; margin-bottom: .9rem; }
+.filtro-tipo .tab { min-height: 36px; padding: .35rem .9rem; font-size: .8rem; }

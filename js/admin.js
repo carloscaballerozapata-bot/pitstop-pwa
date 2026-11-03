@@ -50,8 +50,31 @@ async function loadDashboard() {
   }
 }
 
+let ultimoDashboard = null;
+let filtroTipo = "todas";   // todas · mesa · carrera
+
+function hoyISO() { const d = new Date(), p = n => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()); }
+
+// Ocupación de mesas de hoy: mesas con al menos una reserva activa hoy
+function htmlOcupacion(data) {
+  const mesas = data.mesas || [];
+  if (!mesas.length) return "";
+  const hoy = hoyISO();
+  const activas = data.reservations.filter(r => r.tipo === "mesa" && r.fecha === hoy && r.estado !== "CANCELADA");
+  const ocupadas = new Set(activas.map(r => r.mesaId));
+  const nOc = mesas.filter(m => ocupadas.has(m.id)).length, nLib = mesas.length - nOc;
+  const pct = n => (n / mesas.length * 100).toFixed(1) + "%";
+  let h = '<div class="admin-section"><h3>🍔 Ocupación de mesas hoy</h3>';
+  h += '<div class="ocupa-barra"><span style="width:' + pct(nLib) + ';background:var(--green)"></span><span style="width:' + pct(nOc) + ';background:var(--accent)"></span></div>';
+  h += '<div class="ocupa-leyenda"><span><i style="background:var(--green)"></i>Libres <b>' + nLib + '</b></span><span><i style="background:var(--accent)"></i>Con reserva <b>' + nOc + '</b></span><span>Total <b>' + mesas.length + '</b></span></div>';
+  h += '<p class="text-muted text-sm mt-1">' + activas.length + ' reserva(s) de mesa hoy. Las mesas se editan en la hoja "Mesas".</p></div>';
+  return h;
+}
+
 function renderDashboard(data) {
-  const { reservations, stats } = data;
+  ultimoDashboard = data;
+  const { stats } = data;
+  const reservations = data.reservations.filter(r => filtroTipo === "todas" || (r.tipo || "carrera") === filtroTipo);
 
   let html = '';
 
@@ -63,13 +86,17 @@ function renderDashboard(data) {
   html += '<div class="stat-card canceladas"><div class="num">' + stats.canceladas + '</div><div class="label">Canceladas</div></div>';
   html += '</div>';
 
+  html += htmlOcupacion(data);
+
   // Reservations table
   html += '<div class="admin-section"><h3>🏁 Reservas</h3>';
+  html += '<div class="filtro-tipo">' + [["todas", "Todas"], ["mesa", "🍔 Mesas"], ["carrera", "🏎️ Carreras"]].map(([k, t]) =>
+    '<button type="button" class="tab' + (filtroTipo === k ? ' on' : '') + '" data-filtro="' + k + '">' + t + '</button>').join("") + '</div>';
   if (reservations.length === 0) {
     html += '<p class="text-muted text-center">No hay reservas aún.</p>';
   } else {
     html += '<div class="table-scroll"><table class="reservations-table">';
-    html += '<thead><tr><th>Fecha</th><th>Hora</th><th>Nombre</th><th>Tel</th><th>Serv.</th><th>#</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
+    html += '<thead><tr><th>Fecha</th><th>Hora</th><th>Nombre</th><th>Tel</th><th>Reserva</th><th>#</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>';
     reservations.forEach(r => {
       const badgeClass = r.estado === "PENDIENTE" ? "badge-pendiente" :
         r.estado === "CONFIRMADA" ? "badge-confirmada" : "badge-cancelada";
@@ -78,7 +105,7 @@ function renderDashboard(data) {
       html += '<td>' + esc(r.hora) + '</td>';
       html += '<td>' + esc(r.nombre) + '</td>';
       html += '<td>' + esc(r.telefono) + '</td>';
-      html += '<td>' + esc(r.servicio) + '</td>';
+      html += '<td>' + (r.tipo === "mesa" ? "🍔 " : "🏎️ ") + esc(r.servicio) + (r.observaciones ? '<br><small class="text-muted">' + esc(r.observaciones) + '</small>' : '') + '</td>';
       html += '<td>' + r.participantes + '</td>';
       html += '<td><span class="badge ' + badgeClass + '">' + esc(r.estado) + '</span></td>';
       html += '<td>';
@@ -92,7 +119,10 @@ function renderDashboard(data) {
   html += '</div>';
 
   $("dashboard-content").innerHTML = html;
+  document.querySelectorAll("[data-filtro]").forEach(b => b.addEventListener("click", () => cambiarFiltro(b.dataset.filtro)));
 }
+
+function cambiarFiltro(t) { filtroTipo = t; if (ultimoDashboard) renderDashboard(ultimoDashboard); }
 
 function esc(s) {
   const d = document.createElement("div");
