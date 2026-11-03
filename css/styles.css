@@ -698,3 +698,20 @@ body {
   .hero-velocidad, .largada-go { display: none; }
   .hero-carrera, .h1-linea, .largada-luces i, .luz-pista, .accesos.lista .acceso.principal { animation: none; }
 }
+
+/* Menú inferior con 5 secciones (Inicio, Mapa, Menú, Retos, Cuenta) */
+.bottom-nav { grid-template-columns: repeat(5, 1fr); }
+.bottom-nav a { font-size: .72rem; }
+@media (min-width: 600px) { .accesos.lista { grid-template-columns: repeat(2, 1fr); } }
+
+/* Panel: retos y fotos */
+.reto-admin { background: var(--black); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: .8rem; margin-bottom: .8rem; }
+.reto-admin-cab { display: flex; gap: .7rem; align-items: baseline; margin-bottom: .5rem; flex-wrap: wrap; }
+.reto-admin-cab b { font-family: var(--font-race); font-style: italic; font-weight: 900; font-size: 1.4rem; letter-spacing: .1em; color: var(--accent); }
+.reto-admin-fila { display: grid; grid-template-columns: 1fr 74px 92px; gap: .4rem; align-items: center; margin-bottom: .4rem; }
+.reto-admin-fila select, .reto-admin-fila input { background: var(--panel); border: 1px solid var(--line); color: var(--white); border-radius: 8px; padding: .5rem; font: inherit; width: 100%; }
+.reto-admin-acc { display: flex; gap: .5rem; margin-top: .5rem; flex-wrap: wrap; }
+.fotos-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .7rem; }
+.foto-admin { background: var(--black); border: 1px solid var(--line); border-radius: 8px; padding: .5rem; }
+.foto-admin img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 6px; margin-bottom: .4rem; }
+.foto-sin { aspect-ratio: 1; display: grid; place-items: center; text-align: center; font-size: .75rem; color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; margin-bottom: .4rem; }

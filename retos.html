@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#090b10">
+  <meta name="description" content="Retos entre amigos, campeones y fotos de GO KART SPORT BAR.">
+  <title>Retos y campeones — GO KART SPORT BAR</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="./css/styles.css">
+  <style>
+    .panel-ret { padding: 0 1rem; max-width: 760px; margin: 0 auto; }
+    .vista { display: none; } .vista.on { display: block; animation: aparece .3s ease; }
+    @keyframes aparece { from { opacity: 0; transform: translateY(8px); } }
+    .tarjeta { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; margin-top: 1rem; }
+    .tarjeta h2 { font-family: var(--font-race); font-style: italic; font-weight: 900; font-size: 1.4rem; text-transform: uppercase; margin-bottom: .7rem; }
+    .piloto-fila { display: grid; grid-template-columns: 40px 1fr 40px; gap: .5rem; align-items: center; margin-bottom: .5rem; }
+    .piloto-fila b { font-family: var(--font-race); font-style: italic; font-weight: 900; font-size: 1.2rem; color: var(--accent); text-align: center; }
+    .piloto-fila input, .campo { width: 100%; background: var(--black); border: 1.5px solid var(--line); color: var(--white); border-radius: 10px; padding: .75rem .85rem; font: inherit; }
+    .piloto-fila input:focus, .campo:focus { outline: none; border-color: var(--accent); }
+    .quitar { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 1.1rem; cursor: pointer; }
+    .mas-piloto { background: transparent; border: 1.5px dashed var(--line); color: var(--white); border-radius: 10px; padding: .6rem; width: 100%; font-weight: 800; cursor: pointer; margin-bottom: .8rem; }
+    .sugerencias { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0 1rem; }
+    .sugerencias button { background: var(--black); border: 1px solid var(--line); color: var(--muted); border-radius: 99px; padding: .3rem .7rem; font-size: .78rem; cursor: pointer; }
+    .sugerencias button:hover { color: var(--white); border-color: var(--accent); }
+    .sin-dinero { font-size: .78rem; color: var(--muted); margin-top: .7rem; display: flex; gap: .4rem; }
+    .codigo-grande { text-align: center; padding: 1rem 0 .4rem; }
+    .codigo-grande small { color: var(--muted); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .72rem; }
+    .codigo-grande b { display: block; font-family: var(--font-race); font-style: italic; font-weight: 900; font-size: 3.6rem; letter-spacing: .14em; color: var(--accent); text-shadow: 0 0 24px rgba(255,212,0,.35); line-height: 1.05; }
+    .codigo-grande p { color: var(--muted); font-size: .86rem; }
+    .reto { border-left: 4px solid var(--accent); }
+    .reto.terminado { border-left-color: var(--green); }
+    .reto-cab { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+    .reto-cab b { font-family: var(--font-race); font-style: italic; font-weight: 900; font-size: 1.3rem; letter-spacing: .08em; }
+    .reto p { color: var(--muted); font-size: .84rem; margin: .2rem 0 .5rem; }
+    .podio { display: grid; grid-template-columns: 1fr 1.15fr 1fr; align-items: end; gap: .4rem; margin: .8rem 0 .4rem; text-align: center; }
+    .podio div { border-radius: 8px 8px 0 0; padding: .5rem .3rem; font-family: var(--font-race); font-style: italic; }
+    .podio .p1 { background: linear-gradient(180deg, #ffd400, #c9a700); color: #111318; min-height: 112px; }
+    .podio .p2 { background: linear-gradient(180deg, #d6dbe4, #9aa1ad); color: #111318; min-height: 86px; }
+    .podio .p3 { background: linear-gradient(180deg, #d98a4a, #9c5a26); color: #111318; min-height: 68px; }
+    .podio i { display: block; font-style: normal; font-size: 1.6rem; line-height: 1; }
+    .podio strong { display: block; font-weight: 900; font-size: 1.05rem; word-break: break-word; }
+    .podio span { font-size: .78rem; font-weight: 800; }
+    .resto { list-style: none; font-size: .86rem; color: var(--muted); }
+    .resto li { display: flex; justify-content: space-between; padding: .25rem 0; border-bottom: 1px solid var(--line); }
+    .veredicto { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.35); color: #b7f5cf; border-radius: 8px; padding: .55rem .7rem; font-size: .86rem; margin-top: .6rem; }
+    .buscar { display: grid; grid-template-columns: 1fr auto; gap: .5rem; }
+    .buscar .btn { min-height: 46px; padding: .5rem 1rem; }
+    .campeon { position: relative; overflow: hidden; text-align: center; padding: 1.4rem 1rem; background:
+      radial-gradient(circle at 50% 0%, rgba(255,212,0,.35), transparent 60%), repeating-conic-gradient(rgba(255,255,255,.04) 0 25%, transparent 0 50%) 0 0 / 22px 22px, var(--panel); }
+    .campeon .copa { font-size: 3.2rem; filter: drop-shadow(0 0 18px rgba(255,212,0,.6)); animation: brilla 2.4s ease-in-out infinite; }
+    @keyframes brilla { 50% { transform: scale(1.08) rotate(-4deg); } }
+    .campeon small { color: var(--accent); font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: .72rem; }
+    .campeon b { display: block; font-family: var(--font-race); font-style: italic; font-weight: 900; font-size: 2.4rem; text-transform: uppercase; line-height: 1; margin: .2rem 0; }
+    .campeon p { color: var(--muted); font-size: .86rem; }
+    .tabla { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .tabla td { padding: .55rem .3rem; border-bottom: 1px solid var(--line); }
+    .tabla td:first-child { font-family: var(--font-race); font-style: italic; font-weight: 900; color: var(--accent); width: 2.4rem; font-size: 1.05rem; }
+    .tabla td:last-child { text-align: right; font-family: var(--font-race); font-style: italic; font-weight: 800; font-size: 1.05rem; }
+    .tabla tr:first-child td { color: var(--accent); }
+    .galeria { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem; margin-top: 1rem; }
+    @media (min-width: 600px) { .galeria { grid-template-columns: repeat(3, 1fr); } }
+    .galeria figure { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--panel); cursor: pointer; }
+    .galeria img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+    .galeria figure:hover img { transform: scale(1.05); }
+    .galeria figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: .4rem .5rem; font-size: .74rem; background: linear-gradient(transparent, rgba(0,0,0,.85)); }
+    .galeria figcaption b { font-family: var(--font-race); font-style: italic; font-size: .9rem; display: block; }
+    .vacio { color: var(--muted); text-align: center; padding: 1.2rem .5rem; font-size: .88rem; }
+    .previa { display: none; margin: .6rem 0; border-radius: 8px; max-height: 240px; object-fit: cover; width: 100%; }
+    .acepto { display: flex; gap: .55rem; align-items: flex-start; font-size: .82rem; color: var(--muted); margin: .7rem 0 1rem; }
+    .acepto input { width: 20px; height: 20px; accent-color: var(--accent); flex: 0 0 auto; margin-top: .1rem; }
+    .foto-grande img { width: 100%; border-radius: 12px; }
+    .cargando { color: var(--muted); text-align: center; padding: 1.4rem; }
+  </style>
+</head>
+<body class="con-nav">
+
+  <header class="header">
+    <a href="./index.html" class="header-logo" aria-label="GO KART SPORT BAR — inicio"><img src="./img/logo.png" alt="GO KART SPORT BAR"></a>
+    <a href="./index.html#reservar" class="estado-pill" style="text-decoration:none;color:var(--white)">Reservar carrera ↗</a>
+  </header>
+
+  <div class="page-head">
+    <h1>Retos y <span style="color:var(--accent)">campeones</span></h1>
+    <p>Arma tu carrera con amigos, mira quién manda en la pista y comparte tus fotos.</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Secciones">
+    <button class="tab on" type="button" role="tab" data-vista="reto">🏁 Reto</button>
+    <button class="tab" type="button" role="tab" data-vista="campeones">🏆 Campeones</button>
+    <button class="tab" type="button" role="tab" data-vista="galeria">📸 Galería</button>
+  </div>
+
+  <main class="panel-ret">
+    <!-- RETO -->
+    <section class="vista on" id="vista-reto">
+      <div class="tarjeta">
+        <h2>Nuevo reto</h2>
+        <form id="form-reto" novalidate>
+          <p class="form-label">Pilotos (2 a 8) · usa nombre o apodo</p>
+          <div id="pilotos"></div>
+          <button type="button" class="mas-piloto" id="mas-piloto">+ Agregar piloto</button>
+          <label class="form-label" for="premio">¿Qué se juegan?</label>
+          <input class="campo" id="premio" maxlength="80" placeholder="El perdedor paga las alitas">
+          <div class="sugerencias" id="sugerencias">
+            <button type="button">El perdedor paga las alitas</button>
+            <button type="button">El último paga la ronda de gaseosas</button>
+            <button type="button">El ganador elige el próximo plato</button>
+            <button type="button">El perdedor paga el postre</button>
+          </div>
+          <button type="submit" class="btn btn-primary" id="btn-reto">Crear reto</button>
+          <p class="sin-dinero"><b>⚑</b> Retos sin dinero: solo premios entre amigos. Al terminar la carrera, el personal carga los resultados.</p>
+          <div id="estado-reto" class="status-msg" role="alert"></div>
+        </form>
+      </div>
+
+      <div class="tarjeta hidden" id="reto-creado">
+        <div class="codigo-grande">
+          <small>Código del reto</small>
+          <b id="codigo-nuevo">-----</b>
+          <p>Muéstrale este código al personal cuando terminen de correr.</p>
+        </div>
+        <a class="btn btn-whatsapp mt-1" id="compartir-reto" href="#" target="_blank" rel="noopener">Invitar por WhatsApp</a>
+      </div>
+
+      <div class="tarjeta">
+        <h2>Ver un reto</h2>
+        <div class="buscar">
+          <input class="campo" id="buscar-codigo" maxlength="5" placeholder="Código, ej. 7Y8T3" autocapitalize="characters">
+          <button type="button" class="btn btn-ghost" id="btn-buscar" style="width:auto">Ver</button>
+        </div>
+      </div>
+
+      <div id="mis-retos"></div>
+    </section>
+
+    <!-- CAMPEONES -->
+    <section class="vista" id="vista-campeones">
+      <div id="campeones"><p class="cargando"><span class="spinner"></span></p></div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section class="vista" id="vista-galeria">
+      <div class="tarjeta">
+        <h2>Sube tu foto</h2>
+        <form id="form-foto" novalidate>
+          <label class="form-label" for="foto-nombre">Tu nombre o apodo *</label>
+          <input class="campo" id="foto-nombre" maxlength="24" autocomplete="nickname">
+          <label class="form-label mt-1" for="foto-texto">Un mensaje (opcional)</label>
+          <input class="campo" id="foto-texto" maxlength="140" placeholder="¡Mi mejor vuelta!">
+          <label class="form-label mt-1" for="foto-archivo">Foto *</label>
+          <input class="campo" type="file" id="foto-archivo" accept="image/*">
+          <img class="previa" id="foto-previa" alt="Vista previa de tu foto">
+          <label class="acepto"><input type="checkbox" id="foto-acepto"> Acepto que GO KART SPORT BAR publique esta foto en su app. Si aparecen otras personas, tengo su permiso.</label>
+          <button type="submit" class="btn btn-primary" id="btn-foto">Enviar foto</button>
+          <p class="sin-dinero"><b>⚑</b> El personal revisa cada foto antes de publicarla.</p>
+          <div id="estado-foto" class="status-msg" role="alert"></div>
+        </form>
+      </div>
+      <div class="galeria" id="galeria"></div>
+    </section>
+  </main>
+
+  <div id="hoja-foto" class="modal" role="dialog" aria-modal="true" aria-label="Foto">
+    <div class="modal-caja foto-grande">
+      <button type="button" class="hoja-cerrar" data-cerrar aria-label="Cerrar">✕</button>
+      <img id="foto-grande" alt="">
+      <p class="mt-1" id="foto-grande-txt"></p>
+    </div>
+  </div>
+
+  <nav class="bottom-nav cinco" aria-label="Navegación principal">
+    <a href="./index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>Inicio
+    </a>
+    <a href="./mesas.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4-6 2.5v13L9 17l6 2.5 6-2.5v-13L15 6.5Z"/><path d="M9 4v13M15 6.5v13"/></svg>Mapa
+    </a>
+    <a href="./menu.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 2v8a2 2 0 0 0 2 2v10M5 2v6M9 2v6M17 22V2c-2 1-3 3.5-3 7v4h3"/></svg>Menú
+    </a>
+    <a href="./retos.html" class="on" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>Retos
+    </a>
+    <a href="./cuenta.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Cuenta
+    </a>
+  </nav>
+
+  <script src="./js/api.js"></script>
+  <script src="./js/retos.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+  </script>
+</body>
+</html>

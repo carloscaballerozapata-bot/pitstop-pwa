@@ -38,6 +38,7 @@ async function loadDashboard() {
   try {
     const data = await apiCall("adminGetDashboard", { clave: getClave() });
     renderDashboard(data);
+    cargarRetosAdmin(); cargarFotosAdmin();
   } catch (err) {
     if (err.message.includes("No autorizado")) {
       clearClave();
@@ -201,3 +202,76 @@ document.addEventListener("DOMContentLoaded", () => {
     showView("login");
   }
 });
+
+// ============================================================
+// Retos en pista y fotos por aprobar
+// ============================================================
+function el(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+function noAutorizado(err) { if (String(err.message).includes("No autorizado")) { clearClave(); showView("login"); return true; } return false; }
+
+async function cargarRetosAdmin() {
+  const box = $("retos-admin");
+  try {
+    const retos = await apiCall("adminListarRetos", { clave: getClave() });
+    box.innerHTML = "";
+    if (!retos.length) { box.appendChild(el("p", "text-muted text-center", "No hay retos abiertos.")); return; }
+    retos.forEach(r => box.appendChild(formResultado(r)));
+  } catch (err) { if (!noAutorizado(err)) box.textContent = "Error: " + err.message; }
+}
+
+function formResultado(r) {
+  const f = el("form", "reto-admin");
+  const cab = el("div", "reto-admin-cab");
+  cab.appendChild(el("b", null, r.codigo)); cab.appendChild(el("span", "text-muted text-sm", r.premio));
+  f.appendChild(cab);
+  r.pilotos.forEach((p, i) => {
+    const fila = el("div", "reto-admin-fila");
+    fila.appendChild(el("span", null, p));
+    const pos = el("select"); pos.setAttribute("aria-label", "Posición de " + p); pos.dataset.piloto = p;
+    r.pilotos.forEach((_, j) => pos.appendChild(new Option("P" + (j + 1), j + 1)));
+    pos.value = i + 1;
+    const v = el("input"); v.placeholder = "Vuelta"; v.inputMode = "decimal"; v.maxLength = 8; v.setAttribute("aria-label", "Mejor vuelta de " + p);
+    fila.appendChild(pos); fila.appendChild(v); f.appendChild(fila);
+  });
+  const acc = el("div", "reto-admin-acc");
+  const ok = el("button", "btn btn-sm btn-confirm", "Guardar resultado"); ok.type = "submit";
+  const no = el("button", "btn btn-sm btn-outline", "Cancelar reto"); no.type = "button";
+  acc.appendChild(ok); acc.appendChild(no); f.appendChild(acc);
+  f.addEventListener("submit", async e => {
+    e.preventDefault();
+    const resultados = [...f.querySelectorAll(".reto-admin-fila")].map(x => ({ piloto: x.querySelector("select").dataset.piloto, pos: Number(x.querySelector("select").value), vuelta: x.querySelector("input").value.trim() }));
+    ok.disabled = true;
+    try { const res = await apiCall("adminCargarResultado", { clave: getClave(), codigo: r.codigo, resultados }); showAdminStatus("Resultado guardado. Ganó " + res.ganador + ".", "success"); cargarRetosAdmin(); }
+    catch (err) { if (!noAutorizado(err)) showAdminStatus(err.message, "error"); ok.disabled = false; }
+  });
+  no.addEventListener("click", async () => {
+    if (!confirm("¿Cancelar el reto " + r.codigo + "?")) return;
+    try { await apiCall("adminCancelarReto", { clave: getClave(), codigo: r.codigo }); cargarRetosAdmin(); }
+    catch (err) { if (!noAutorizado(err)) showAdminStatus(err.message, "error"); }
+  });
+  return f;
+}
+
+async function cargarFotosAdmin() {
+  const box = $("fotos-admin");
+  try {
+    const fotos = await apiCall("adminListarFotos", { clave: getClave() });
+    box.innerHTML = "";
+    if (!fotos.length) { box.appendChild(el("p", "text-muted text-center", "No hay fotos por revisar.")); return; }
+    const g = el("div", "fotos-admin-grid");
+    fotos.forEach(f => {
+      const c = el("div", "foto-admin");
+      if (f.mini) { const im = el("img"); im.src = f.mini; im.alt = "Foto de " + f.nombre; c.appendChild(im); } else c.appendChild(el("div", "foto-sin", "Sin vista previa: revísala en Drive"));
+      c.appendChild(el("b", null, f.nombre)); if (f.texto) c.appendChild(el("p", "text-muted text-sm", f.texto));
+      const acc = el("div", "reto-admin-acc");
+      const si = el("button", "btn btn-sm btn-confirm", "Aprobar"), no = el("button", "btn btn-sm btn-cancel", "Rechazar");
+      si.type = no.type = "button";
+      const moderar = async estado => { si.disabled = no.disabled = true;
+        try { await apiCall("adminModerarFoto", { clave: getClave(), id: f.id, estado }); c.remove(); if (!g.children.length) cargarFotosAdmin(); }
+        catch (err) { if (!noAutorizado(err)) showAdminStatus(err.message, "error"); si.disabled = no.disabled = false; } };
+      si.addEventListener("click", () => moderar("APROBADA")); no.addEventListener("click", () => moderar("RECHAZADA"));
+      acc.appendChild(si); acc.appendChild(no); c.appendChild(acc); g.appendChild(c);
+    });
+    box.appendChild(g);
+  } catch (err) { if (!noAutorizado(err)) box.textContent = "Error: " + err.message; }
+}
