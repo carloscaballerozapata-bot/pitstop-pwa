@@ -2,7 +2,7 @@
 // GO KART SPORT BAR — Service Worker
 // Al publicar cambios, subir CACHE_NAME (gokart-v3, v4…) para que los teléfonos los reciban.
 // ============================================================
-const CACHE_NAME = "gokart-v8";
+const CACHE_NAME = "gokart-v10";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
@@ -19,6 +19,8 @@ const STATIC_ASSETS = [
   "./js/retos.js",
   "./retos.html",
   "./js/circuito.js",
+  "./js/video.js",
+  "./video/hero-poster.jpg",
   "./js/menu.js",
   "./js/admin.js",
   "./manifest.json",
@@ -52,6 +54,8 @@ self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   if (e.request.url.includes("script.google.com")) return;
   if (!e.request.url.startsWith(self.location.origin)) return;
+  // Videos: directo a la red (el teléfono los pide por partes y no se guardan en caché)
+  if (e.request.url.includes("/video/") && e.request.url.endsWith(".mp4")) return;
 
   if (e.request.mode === "navigate") {
     // Páginas: red primero (recibe actualizaciones); sin conexión, la copia guardada

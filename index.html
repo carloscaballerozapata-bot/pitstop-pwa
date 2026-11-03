@@ -33,7 +33,10 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero hero-carrera">
+  <section class="hero hero-carrera con-video">
+    <video class="hero-video" id="hero-video" muted loop playsinline preload="none" poster="./video/hero-poster.jpg" aria-hidden="true" tabindex="-1">
+      <source src="./video/hero-pista.mp4" type="video/mp4">
+    </video>
     <div class="hero-velocidad" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <span class="hero-kicker">Karting · Sport Bar · FEXCO</span>
     <h1><span class="h1-linea">Tu próxima</span><span class="h1-linea">experiencia</span><em class="h1-linea">comienza aquí</em></h1>
@@ -42,7 +45,19 @@
       <div class="largada-luces"><i></i><i></i><i></i><i></i><i></i></div>
       <span class="largada-go">¡LUZ VERDE!</span>
     </div>
+    <button type="button" class="btn-video" id="btn-video" aria-haspopup="dialog">
+      <span class="btn-video-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5Z" fill="currentColor"/></svg></span>
+      <span>VER VIDEO<small>con sonido</small></span>
+    </button>
   </section>
+
+  <!-- VIDEO COMPLETO -->
+  <dialog class="video-modal" id="video-modal" aria-label="Video de GO KART SPORT BAR">
+    <button type="button" class="video-cerrar" id="video-cerrar" aria-label="Cerrar video">✕</button>
+    <video id="video-completo" controls playsinline preload="none" poster="./video/completo-poster.jpg">
+      <source src="./video/gokart-completo.mp4" type="video/mp4">
+    </video>
+  </dialog>
 
   <!-- ACCESOS -->
   <nav class="accesos lista" aria-label="Accesos rápidos">
@@ -232,6 +247,7 @@
   <script src="./js/api.js"></script>
   <script src="./js/app.js"></script>
   <script src="./js/circuito.js"></script>
+  <script src="./js/video.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("./sw.js").catch(err => console.warn("SW registro falló:", err));
