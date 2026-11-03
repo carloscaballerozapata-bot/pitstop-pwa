@@ -2,7 +2,7 @@
 // GO KART SPORT BAR — Service Worker
 // Al publicar cambios, subir CACHE_NAME (gokart-v3, v4…) para que los teléfonos los reciban.
 // ============================================================
-const CACHE_NAME = "gokart-v5";
+const CACHE_NAME = "gokart-v6";
 const STATIC_ASSETS = [
   "./",
   "./index.html",
@@ -16,6 +16,7 @@ const STATIC_ASSETS = [
   "./js/app.js",
   "./js/mapa.js",
   "./js/mesas.js",
+  "./js/circuito.js",
   "./js/menu.js",
   "./js/admin.js",
   "./manifest.json",
