@@ -1,0 +1,12 @@
+Fotos de referencia del menú (licencias gratuitas, uso comercial permitido sin atribución obligatoria).
+Se reemplazan subiendo la foto real del plato a Drive: GO KART SPORT BAR / Menú / <categoría> / "<Nombre del plato>.jpg".
+
+burger-clasica.jpg    Unsplash  https://unsplash.com/photos/cVqNYbeN1WY
+burger-go-kart.jpg    Unsplash  https://unsplash.com/photos/lZnsTJKbsOg
+burger-hawai.jpg      Pexels    https://www.pexels.com/photo/15010283/
+chicken-sandwich.jpg  Unsplash  https://unsplash.com/photos/sxapiJ8zbq0
+alitas-racing.jpg     Unsplash  https://unsplash.com/photos/YgirePmHPZU
+tenders.jpg           Unsplash  https://unsplash.com/photos/Dr3vO9qZs6Y
+salchipapa-turbo.jpg  Unsplash  https://unsplash.com/photos/abT5N6GC-a4
+pique-go.jpg          Unsplash  https://unsplash.com/photos/d1wxzVZjGKs
+costillas-bbq.jpg     Unsplash  https://unsplash.com/photos/QtLYiB6P-KM

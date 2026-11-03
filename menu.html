@@ -32,10 +32,23 @@
     .mas-rapido.ok { background: var(--green); color: #052e14; font-size: .95rem; }
     .prod-foto { margin: -1.4rem -1.2rem 1rem; height: 190px; display: grid; place-items: center; font-size: 6rem; border-radius: 24px 24px 0 0;
       background: radial-gradient(circle at 50% 60%, rgba(255,212,0,.28), transparent 55%), radial-gradient(circle at 20% 20%, rgba(255,53,69,.25), transparent 50%), #0d1017; }
+    .producto-img { overflow: hidden; }
+    .producto-img img { width: 100%; height: 100%; object-fit: cover; }
+    .prod-foto.con-foto { background-size: cover; background-position: center; }
     .prod-cabeza { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
     .prod-cabeza h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; }
     .prod-cabeza b { font-family: var(--font-display); color: var(--accent); font-size: 1.25rem; white-space: nowrap; }
     .prod-desc { color: var(--muted); font-size: .9rem; margin: .4rem 0 .6rem; }
+    .producto p { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .menu-cat { font-family: var(--font-race); font-style: italic; font-weight: 900; font-size: 1.45rem; text-transform: uppercase; margin: .9rem 0 .1rem; display: flex; align-items: center; gap: .5rem; }
+    .menu-cat::after { content: ""; flex: 1; height: 6px; background: repeating-conic-gradient(#ff2d3d 0 25%, transparent 0 50%) 0 0 / 6px 6px; opacity: .8; }
+    .opciones { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: .5rem; }
+    .opcion { background: var(--black); border: 1.5px solid var(--line); border-radius: 8px; color: var(--white); padding: .55rem .5rem; cursor: pointer; text-align: center; transform: skewX(-6deg); }
+    .opcion b { display: block; font-family: var(--font-race); font-style: italic; font-weight: 800; font-size: 1rem; line-height: 1.1; }
+    .opcion small { color: var(--muted); font-weight: 700; font-size: .78rem; }
+    .opcion.on { background: var(--accent); border-color: var(--accent); color: var(--ink); box-shadow: 0 6px 18px var(--accent-glow); }
+    .opcion.on small { color: #3b3200; }
+    .producto-img.con-foto { padding: 0; }
     .extra { display: flex; align-items: center; gap: .7rem; padding: .7rem .2rem; border-bottom: 1px solid var(--line); cursor: pointer; }
     .extra input { width: 20px; height: 20px; accent-color: var(--accent); }
     .extra span { flex: 1; }
@@ -68,13 +81,13 @@
   </header>
 
   <div class="page-head">
-    <h1>Menú <span style="color:var(--red)">digital</span></h1>
-    <p>Toca un producto para ver los detalles y agregar extras.</p>
+    <h1>Menú <span style="color:var(--red)">#01</span></h1>
+    <p>Toca un plato para elegir el tamaño y la salsa.</p>
   </div>
 
   <div class="tabs" id="tabs" role="tablist" aria-label="Categorías"></div>
   <main class="productos" id="productos" aria-live="polite"></main>
-  <p class="menu-nota">Precios en bolivianos (Bs). Menú y precios de ejemplo. Los pedidos desde la app estarán disponibles pronto: por ahora muestra tu pedido en el bar.</p>
+  <p class="menu-nota">Precios en bolivianos (Bs). Salsas disponibles: BBQ clásica, Hot y Miel y mostaza. Los pedidos desde la app estarán disponibles pronto: por ahora muestra tu pedido en el bar.</p>
 
   <!-- DETALLE DE PRODUCTO -->
   <div id="hoja-producto" class="modal" role="dialog" aria-modal="true" aria-labelledby="prod-nombre">
@@ -83,9 +96,13 @@
       <div class="prod-foto" id="prod-emoji" aria-hidden="true"></div>
       <div class="prod-cabeza"><h2 id="prod-nombre"></h2><b id="prod-precio"></b></div>
       <p class="prod-desc" id="prod-desc"></p>
-      <div id="prod-extras-wrap">
-        <p class="subtitulo">Extras</p>
-        <div id="prod-extras"></div>
+      <div id="prod-opciones-wrap">
+        <p class="subtitulo">Elige el tamaño</p>
+        <div class="opciones" id="prod-opciones" role="radiogroup" aria-label="Tamaño"></div>
+      </div>
+      <div id="prod-salsas-wrap" class="hidden">
+        <p class="subtitulo">Elige tu salsa</p>
+        <div class="opciones" id="prod-salsas" role="radiogroup" aria-label="Salsa"></div>
       </div>
       <div class="prod-pie">
         <div class="contador">
@@ -118,6 +135,7 @@
     </a>
   </nav>
 
+  <script src="./js/api.js"></script>
   <script src="./js/menu.js"></script>
   <script>
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
